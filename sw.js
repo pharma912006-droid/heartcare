@@ -1,0 +1,4 @@
+const V='heartcare-v2',F=["./", "index.html", "manifest.json", "css/styles.css", "js/app.js", "js/engine.js", "vendor/chart.umd.js", "vendor/three.min.js", "assets/icon.svg", "data/audit.json", "data/exercise/age_guidelines.json", "data/drugs/anticoagulants.json", "data/drugs/antihypertensives.json", "data/drugs/statins.json", "data/safety/emergency_guidance.json", "data/vitamins/supplements.json"];
+self.addEventListener('install',e=>e.waitUntil(caches.open(V).then(c=>c.addAll(F)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',e=>{if(e.request.method==='GET')e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))});
